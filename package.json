@@ -1,0 +1,17 @@
+{
+  "name": "virtual-scrolling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babelify": "^5.0.4",
+    "node-lessify": "0.0.9-b",
+    "node-uuid": "^1.4.3",
+    "react": "^0.12.2"
+  }
+}

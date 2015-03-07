@@ -5,7 +5,7 @@ import alertStore from './alert-store';
 let AlertList = React.createClass({
 	getInitialState () {
 		return {
-			data: alertStore.getAll(),
+			data: alertStore.getAll().slice( 0, 250 ),
 			offset: 0,
 			startRow: 0,
 			endRow: 50
@@ -29,14 +29,16 @@ let AlertList = React.createClass({
 
 	render () {
 		window.list = this;
-		let { startRow, endRow, offset } = this.state;
+		let { startRow, endRow, offset, data } = this.state;
 		let tbodyStyle = {
-			height: alertStore.getTotal() + 'em',
-			top: offset
+			top: offset,
+			height: ( data.length - startRow ) + 'em'
 		};
-		let alerts = this.state.data
+
+		let alerts = data
 			.slice( startRow, endRow )
-			.map( alert => <Alert key={alert.priceExceptionId} alert={alert} /> );
+			.map( alert => <Alert key={alert.priceExceptionId} alert={alert} /> )
+			;
 
 		return (
 			<div>

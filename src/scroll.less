@@ -8,6 +8,34 @@ h1 {
 	color: blue;
 }
 
+.grid {
+	position: relative;
+	.header {}
+	.body {
+		position: relative;
+		height: 250px;
+		overflow: scroll;
+	}
+	.scroller {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		// background: green;
+	}
+	.virtual {
+		z-index: 0;
+		> div {
+			height: 20px;
+			overflow: hidden;
+		}
+		position: absolute;
+		top: 0;
+	}
+}
+
 table {
 	width: 400px;
 	height: 300px;
@@ -17,6 +45,6 @@ table {
 	position: relative;
 	tbody {
 		display: block;
-		position: relative;
+		position: absolute;
 	}
 }

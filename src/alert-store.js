@@ -9,12 +9,12 @@ for ( let i = 0; i < 25; i++ ) {
 }
 data = data.map( Object.create );
 data.forEach( ( alert, i ) => {
-	alert.priceExceptionId = uuid.v4();
+	alert.id = alert.priceExceptionId = uuid.v4();
 	alert.skuNumber = i;
 });
 alerts = undefined;
 
-function getAll ( start, end ) {
+function getAll ( start = 0, end = data.length ) {
 	return data.slice( start, end );
 }
 

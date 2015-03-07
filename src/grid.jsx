@@ -106,7 +106,7 @@ let Grid = React.createClass({
 		return (
 		<div className='grid'>
 			{header}
-			<div className='body' ref='body' onScroll={this._onScroll} tabIndex='-1'>
+			<div className='body' ref='body' onScroll={this._onScroll} tabIndex='0'>
 				<div className='virtual' style={virtualStyle}>
 					{ rows }
 				</div>

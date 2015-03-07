@@ -11,11 +11,12 @@ for ( let i = 0; i < 25; i++ ) {
 data = data.map( ( item, i ) => {
 	item = _extend( {}, item );
 	let id = uuid.v4();
-	return _extend( item, {
+	_extend( item, {
 		id,
 		priceExceptionId: id,
 		skuNumber: Math.floor( Math.random() * 1000000 + 100000 )
 	});
+	return Object.freeze( item );
 });
 alerts = undefined;
 

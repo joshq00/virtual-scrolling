@@ -1,10 +1,26 @@
 import React from 'react';
+const { PropTypes } = React;
+
+const ColumnDef = PropTypes.shape({
+	name: PropTypes.string.isRequired,
+	formatter: PropTypes.func,
+	sortNormalizer: PropTypes.func,
+	className: PropTypes.string,
+	style: PropTypes.object
+});
 
 let Grid = React.createClass({
+	propTypes: {
+		columns: PropTypes.arrayOf( ColumnDef ).isRequired,
+		keyField: PropTypes.string.isRequired,
+		data: PropTypes.arrayOf( PropTypes.object )
+	},
+
 	getDefaultProps () {
 		return {
 			header: true,
-			rowHeight: 20
+			rowHeight: 20,
+			data: []
 		};
 	},
 	getInitialState () {
@@ -24,15 +40,18 @@ let Grid = React.createClass({
 			this.refs.body.getDOMNode().onscroll = this._onScroll;
 		}
 	},
+
 	getFirstVisible () {
 		let top = this.getTop();
-		return Math.floor( top / 20 );
+		return Math.floor( top / this.props.rowHeight );
 	},
+
 	getLastVisible () {
 		let top = this.getTop();
 		let bottom = top + this.getHeight();
-		return Math.ceil( bottom / 20 );
+		return Math.ceil( bottom / this.props.rowHeight );
 	},
+
 	getTop () {
 		return this.state.scrollTop || 0;
 	},
@@ -62,37 +81,68 @@ let Grid = React.createClass({
 
 	render () {
 		let header = this.props.header ? <Header /> : null;
-		let rows = this.props.children;
+		let data = this.props.data;
 
 		let first = Math.max( 0, this.getFirstVisible() - 10 );
 		let last = this.getLastVisible() + 10;
 		// last = last + ( last - first ); // render an extra page
 
 		let scrollerStyle = {
-			height: rows.length * this.props.rowHeight,
+			height: data.length * this.props.rowHeight,
 		};
 
-		let top = this.getTop();
 		let virtualStyle = {
-			// top: top - top % 20
-			top: first * 20
+			top: first * this.props.rowHeight,
+			height: this.props.rowHeight * ( data.length - first )
 		};
+
+		let rows = data.slice( first, last ).map( item =>
+			<Row
+				columns={ this.props.columns }
+				item={ item }
+				key={ item[ this.props.keyField ] } />
+		);
 
 		return (
 		<div className='grid'>
 			{header}
-			<div className='body' ref='body' onScroll={this._onScroll}>
+			<div className='body' ref='body' onScroll={this._onScroll} tabIndex='-1'>
 				<div className='virtual' style={virtualStyle}>
-					{rows.slice( first, last )}
+					{ rows }
 				</div>
-				<div className='scroller' style={scrollerStyle}></div>
 			</div>
 		</div>
 		);
 	}
 });
 export default Grid;
+let Row = React.createClass({
+	propTypes: {
+		columns: PropTypes.arrayOf( ColumnDef ).isRequired,
+		item: PropTypes.object.isRequired
+	},
+	render () {
+		let { item, columns } = this.props;
 
+		let cells = columns.map( col => {
+			let field = col.name;
+			let val = item[ field ];
+			let displayVal = col.formatter ? col.formatter( val, item ) : val;
+
+			return (
+				<div key={ field } className={ col.className } style={ col.style }>
+					{ displayVal }
+				</div>
+			);
+		});
+
+		return (
+		<div className='row'>
+			{ cells }
+		</div>
+		);
+	}
+});
 let Header = React.createClass({
 	render () {
 		return (<div>header</div>);

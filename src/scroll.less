@@ -1,3 +1,7 @@
+html {
+	font-family: Arial,Verdana;
+	font-size: 0.95em;
+}
 html, body {
 	box-sizing: border-box;
 	margin: 0;
@@ -15,6 +19,9 @@ h1 {
 		position: relative;
 		height: 250px;
 		overflow: scroll;
+		&:focus {
+			outline: 0;
+		}
 	}
 	.scroller {
 		position: absolute;
@@ -27,12 +34,33 @@ h1 {
 	}
 	.virtual {
 		z-index: 0;
-		> div {
-			height: 20px;
-			overflow: hidden;
-		}
 		position: absolute;
 		top: 0;
+		left: 0;
+		right: 0;
+		overflow-x: visible;
+	}
+
+	/* grid row */
+	.row {
+		display: block;
+		display: flex;
+		height: 20px;
+		line-height: 20px;
+		overflow: hidden;
+
+		/* column */
+		> * {
+			padding: 0 4px;
+			display: inline-block;
+			flex: 1;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			// width: auto;
+			white-space: nowrap;
+			border: 1px solid #ccc;
+			border-width: 0 1px 1px 0;
+		}
 	}
 }
 
@@ -46,5 +74,26 @@ table {
 	tbody {
 		display: block;
 		position: absolute;
+	}
+}
+
+.row {
+	.number {
+		text-align: right;
+		font-family: monospace;
+	}
+	.market {
+		flex: 0 0 8em;
+	}
+	.price {
+		.number;
+		flex: 0 1 5em;
+	}
+	.enum {
+		text-align: center;
+	}
+	.sku-status {
+		.enum;
+		flex: 0 1 5em;
 	}
 }

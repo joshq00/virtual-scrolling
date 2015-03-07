@@ -1,38 +1,45 @@
 require( './scroll.less' );
 import React from 'react';
-import AlertList from './alerts.jsx';
 import Grid from './grid.jsx';
 import alertStore from './alert-store';
+import { columns } from './alert-grid-config.jsx';
 
 window.React = React;
 
-let App = React.createClass({
-	render () {
-		let alerts = alertStore.getAll().map( alert =>
-			<div key={alert.id}>
-				<span>{alert.skuNumber}</span>
-				| <span>{alert.skuDescription}</span>
-				| <span>{alert.marketNumber} - {alert.marketName}</span>
-				| <span>{alert.currentRetailAmount}</span>
-				| <span>{alert.suggestRetailAmount}</span>
-				| <span>{alert.skuStatusCode}</span>
-			</div>
-		);
+function getData () {
+	return {
+		data: alertStore.getAll()
+	};
+}
 
+let App = React.createClass({
+	getInitialState () {
+		return getData();
+	},
+
+	componentDidMount () {
+		alertStore.on( this._change );
+	},
+
+	componentWillUnmount () {
+		alertStore.off( this._change );
+	},
+
+	_change () {
+		this.setState( getData() );
+	},
+
+	render () {
 		return (
 		<div>
-		<h1>header</h1>
-		<Grid>
-			{alerts}
-		</Grid>
+			<h1>header</h1>
+			<Grid columns={columns} data={this.state.data} keyField={'id'} />
 		</div>
 		);
 	}
 });
 export default App;
-// setTimeout( () => {
 console.time( 'start' );
 React.render( <App />, document.body, () => {
 	console.timeEnd( 'start' );
 } );
-// }, 1000 );

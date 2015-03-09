@@ -8,17 +8,11 @@ function decimalFormatter ( decimalPlaces ) {
 let columns = [ {
 	name: 'skuNumber',
 	className: 'number',
-	style: {
-		flex: '0 1 7em'
-	},
 	formatter ( value ) {
 		return ( '0000000000' + value ).replace( /0*(\d{4})(\d{3})(\d{3})$/, '$1-$2-$3' );
 	}
 }, {
 	name: 'skuDescription',
-	style: {
-		flex: '2'
-	},
 	formatter ( value ) {
 		return <span title={value}>{value}</span>;
 	}

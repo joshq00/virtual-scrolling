@@ -87,13 +87,9 @@ let Grid = React.createClass({
 		let last = this.getLastVisible() + 10;
 		// last = last + ( last - first ); // render an extra page
 
-		let scrollerStyle = {
-			height: data.length * this.props.rowHeight,
-		};
-
 		let virtualStyle = {
 			top: first * this.props.rowHeight,
-			marginBottom: this.props.rowHeight * ( data.length - last )
+			height: this.props.rowHeight * ( data.length - first )
 		};
 
 		let rows = data.slice( first, last ).map( item =>

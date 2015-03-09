@@ -20,7 +20,7 @@ data = data.map( ( item, i ) => {
 });
 alerts = undefined;
 
-let resolved = false;
+let resolved = true;
 alerts = new Promise( function ( resolve, reject ) {
 	let delay = 0;
 	setTimeout( () => {

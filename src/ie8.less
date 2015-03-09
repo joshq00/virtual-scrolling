@@ -1,0 +1,35 @@
+.grid {
+	.virtual {
+		display: table;
+	}
+	/* grid row */
+	.row {
+		display: table-row;
+		/* column */
+		> * {
+			display: table-cell;
+		}
+	}
+}
+/*
+.row {
+	.number {
+		text-align: right;
+		font-family: monospace;
+	}
+	.market {
+		flex: 0 0 8em;
+	}
+	.price {
+		.number;
+		flex: 0 1 5em;
+	}
+	.enum {
+		text-align: center;
+	}
+	.sku-status {
+		.enum;
+		flex: 0 1 5em;
+	}
+}
+*/

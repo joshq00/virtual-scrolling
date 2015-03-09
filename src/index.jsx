@@ -1,8 +1,11 @@
 require( './scroll.less' );
+if ( document.documentMode <= 8 ) {
+	require( './ie8.less' );
+}
 import React from 'react';
-import Grid from './grid.jsx';
+import Grid from './grid';
 import alertStore from './alert-store';
-import { columns } from './alert-grid-config.jsx';
+import { columns } from './alert-grid-config';
 
 window.React = React;
 

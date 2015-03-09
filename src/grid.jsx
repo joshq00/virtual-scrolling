@@ -93,7 +93,7 @@ let Grid = React.createClass({
 
 		let virtualStyle = {
 			top: first * this.props.rowHeight,
-			height: this.props.rowHeight * ( data.length - first )
+			marginBottom: this.props.rowHeight * ( data.length - last )
 		};
 
 		let rows = data.slice( first, last ).map( item =>

@@ -5,9 +5,26 @@ if ( document.documentMode <= 8 ) {
 import React from 'react';
 import Grid from './grid';
 import alertStore from './alert-store';
+import * as alertActions from './alert-actions';
 import { columns } from './alert-grid-config';
 
 window.React = React;
+
+alertActions.get({
+	'sku.dept': 27,
+	'sku.cls': 4,
+	'sku.ctgy': 101,
+	'sku.subcls': {
+		// $in: [ 6, 7, 8, 9, 10 ]
+		$gt: 12
+	},
+	sort: [
+		// '-score'
+		'sku.number',
+		// 'market.number',
+	].join(' '),
+	limit: 10
+});
 
 function getData () {
 	return {
@@ -35,8 +52,8 @@ let App = React.createClass({
 	render () {
 		return (
 		<div>
-			<h1>header</h1>
-			<Grid columns={columns} data={this.state.data} keyField={'id'} />
+			<h1>header ({this.state.data.length})</h1>
+			<Grid columns={columns} data={this.state.data} keyField={'_id'} />
 		</div>
 		);
 	}

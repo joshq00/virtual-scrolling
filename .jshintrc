@@ -1,0 +1,18 @@
+{
+  "browser": true,
+  "node": true,
+  "esnext": true,
+  "globals": {
+    "mobileFramework": true
+  },
+  "predef": {
+  },
+  "eqeqeq": true,
+  "quotmark": true,
+  "smarttabs": true,
+  "trailing": true,
+  "undef": true,
+  "unused": "vars",
+  "eqnull": true,
+  "strict": false
+}

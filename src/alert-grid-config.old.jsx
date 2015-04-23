@@ -5,27 +5,47 @@ function decimalFormatter ( decimalPlaces ) {
 	return ( value ) => decimal( value, decimalPlaces );
 }
 
+let HoverEl = React.createClass({
+	getInitialState () {
+		return {
+			hoverState: 0
+		};
+	},
+	_mout () {
+		this.setState({ hoverState: 0 })
+	},
+	_mover () {
+		this.setState({ hoverState: 1 })
+	},
+	render () {
+		// <div >
+		return (
+			<div onMouseOver={this._mover} onMouseOut={this._mout}>
+				{this.state.hoverState}
+			</div>
+		);
+		// </div>
+	}
+});
+
+
 let columns = [ {
-	name: 'sku.number',
+	name: 'skuNumber',
 	className: 'number',
-	formatter ( value, record ) {
-		value = record.sku.number;
+	formatter ( value ) {
 		return ( '0000000000' + value ).replace( /0*(\d{4})(\d{3})(\d{3})$/, '$1-$2-$3' );
 	}
 }, {
-	name: 'sku.description',
-	formatter ( v, r ) {
-		return r.sku.description;
-	}
+	name: 'skuDescription',
+	// formatter ( value ) {
 	// 	return (<HoverEl/>);
 	// 	// return <span title={value}>{value}</span>;
 	// }
 }, {
-	name: 'market.number',
+	name: 'marketNumber',
 	// className: 'market',
 	formatter ( value, record ) {
-		let { number, name } = record.market;
-		return [ ~~number, name ].join( ' - ' );
+		return [ ~~value, record.marketName ].join( ' - ' );
 	}
 }, {
 	name: 'currentRetailAmount',

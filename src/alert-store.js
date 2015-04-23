@@ -1,43 +1,18 @@
 /* jshint devel: true, esnext: true */
-import uuid from 'node-uuid';
 import {EventEmitter} from 'events';
-import alerts from './alerts.json';
-import { _extend } from 'util';
+import dispatcher from './dispatcher';
 
 let data = [];
-for ( let i = 0; i < 25; i++ ) {
-	data.push( ...alerts.response.data );
-}
-data = data.map( ( item, i ) => {
-	item = _extend( {}, item );
-	let id = uuid.v4();
-	_extend( item, {
-		id,
-		priceExceptionId: id,
-		skuNumber: Math.floor( Math.random() * 1000000 + 100000 )
-	});
-	return Object.freeze( item );
-});
-alerts = undefined;
-
-let resolved = true;
-alerts = new Promise( function ( resolve, reject ) {
-	let delay = 0;
-	setTimeout( () => {
-		resolve( data );
-		resolved = true;
-	}, delay );
-} );
-
-function getAll ( start = 0, end = data.length ) {
-	return resolved ? data.slice( start, end ) : [];
+function getAll () {
+	return data;
 }
 
 class AlertStore extends EventEmitter {
 	constructor () {
 		super();
-		alerts.then( () => this.emit() );
+		dispatcher.register( this.action.bind( this ) );
 	}
+
 	on ( cb ) {
 		this.addListener( 'change', cb );
 	}
@@ -54,8 +29,18 @@ class AlertStore extends EventEmitter {
 		return data.length;
 	}
 
-	getAll ( ...args ) {
-		return getAll( ...args );
+	getAll () {
+		return getAll();
+	}
+
+	action ( action ) {
+		let { type } = action;
+
+		switch ( type ) {
+			case 'RAW_ALERTS':
+				data = action.data;
+				this.emit();
+		}
 	}
 }
 

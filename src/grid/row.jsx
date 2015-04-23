@@ -10,9 +10,9 @@ const Row = React.createClass({
 		item: PropTypes.object.isRequired
 	},
 
-	// shouldComponentUpdate ( nextProps, nextState ) {
-	// 	return false;
-	// },
+	shouldComponentUpdate ( nextProps, nextState ) {
+		return false;
+	},
 
 	render () {
 		let { item, columns } = this.props;

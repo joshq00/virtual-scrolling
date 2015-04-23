@@ -17,13 +17,14 @@ alertActions.get({
 	'sku.subcls': {
 		// $in: [ 6, 7, 8, 9, 10 ]
 		$gt: 12
+		// $in: [ 2 ]
 	},
-	sort: [
-		// '-score'
-		'sku.number',
-		// 'market.number',
-	].join(' '),
-	limit: 10
+	// sort: [
+	// 	// '-score'
+	// 	'sku.number',
+	// 	// 'market.number',
+	// ].join(' '),
+	limit: 1000
 });
 
 function getData () {

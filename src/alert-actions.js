@@ -11,7 +11,7 @@ export function get ( options ) {
 }
 
 function got ( response ) {
-	let data = response.alerts;
+	let data = response.data;
 	data.length = response.count;
 
 	dispatcher.dispatch({

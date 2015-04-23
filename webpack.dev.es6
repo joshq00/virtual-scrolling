@@ -2,8 +2,9 @@
 
 import webpack from 'webpack';
 import { _extend } from 'util';
-import { output, entry, loaders, port, resolve, plugins } from './webpack.config.es6';
+import { output, entry, loaders, resolve, plugins } from './webpack.config.es6';
 
+let port = 3001;
 let devtool = 'eval';
 
 output = _extend( {}, output );

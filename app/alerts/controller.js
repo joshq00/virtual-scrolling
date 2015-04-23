@@ -1,3 +1,4 @@
+import JSONStream from 'JSONStream';
 import Alert from './model';
 import { Router } from 'express';
 import { _extend } from 'util';
@@ -9,10 +10,12 @@ router.get( '/alerts', ( request, response ) => {
 	let options = getOptions( request );
 	console.log( options );
 	findAll( options )
-		.then(
-			data => response.json( data ),
-			e => response.status( 500 ).send( e )
-		);
+		.stream().pipe( JSONStream.stringify() ).pipe( response );
+		// .then(
+		// 	data => response.json( data ),
+		// 	e => response.status( 500 ).send( e )
+		// );
+
 } );
 
 function getOptions ( request ) {
@@ -45,7 +48,7 @@ export function findAll ( options ) {
 	if ( options.sort ) {
 		alerts.sort( options.sort );
 	}
-
+return alerts;
 	alerts = alerts.exec();
 
 	let count = Alert
@@ -53,23 +56,19 @@ export function findAll ( options ) {
 		.count()
 		.exec();
 
-	// return buildResponse( options, alerts, count );
-	return Promise.all( [ alerts, count ] )
-		.then ( ( results ) => {
-			let elapsed = parseFloat(
-				( ( Date.now() - begin ) / 1000 ).toFixed( 3 )
-			);
-			let alerts = results[ 0 ];
-			let count = results[ 1 ];
+	let future = Promise
+		.all( [ count, alerts ] )
+		.then( results => {
 			return {
-				elapsed,
-				count,
-				alerts,
+				count: results[ 0 ],
+				data: results[ 1 ]
 			};
 		});
-	// return {
-	// 	alerts,
-	// 	count
-	// };
-	// return new DSResponse( count, alerts, options.offset, options.limit );
+
+	return future.then( response => {
+		let elapsed = parseFloat(
+			( ( Date.now() - begin ) / 1000 ).toFixed( 3 )
+		);
+		return _extend( { elapsed }, response );
+	});
 }

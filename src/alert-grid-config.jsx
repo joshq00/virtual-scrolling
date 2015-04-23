@@ -28,29 +28,29 @@ let columns = [ {
 		return [ ~~number, name ].join( ' - ' );
 	}
 }, {
-	name: 'currentRetailAmount',
+	name: 'sku.price',
+	className: 'price',
+	formatter: ( v, r ) => decimal( r.sku.price, 2 )
+}, {
+	name: 'suggestedPrice',
 	className: 'price',
 	formatter: decimalFormatter( 2 )
-}, {
-	name: 'suggestRetailAmount',
-	className: 'price',
-	formatter: decimalFormatter( 2 )
-}, {
-	name: 'skuStatusCode',
-	className: 'sku-status',
-	valueMap: {
-		100: 'Active',
-		200: 'Seasonal',
-		300: 'Out of season',
-		400: 'Inactive',
-	},
-	formatter( value ) {
-		return <small>{[ value, this.valueMap[ value ] ].join( ' - ' )}</small>;
-	}
-}, {
-	name: 'rollingTwelveFiscalPeriodNetSalesAmount',
-	className: 'price',
-	formatter: decimalFormatter( 0 )
+// }, {
+// 	name: 'skuStatusCode',
+// 	className: 'sku-status',
+// 	valueMap: {
+// 		100: 'Active',
+// 		200: 'Seasonal',
+// 		300: 'Out of season',
+// 		400: 'Inactive',
+// 	},
+// 	formatter( value ) {
+// 		return <small>{[ value, this.valueMap[ value ] ].join( ' - ' )}</small>;
+// 	}
+// }, {
+// 	name: 'rollingTwelveFiscalPeriodNetSalesAmount',
+// 	className: 'price',
+// 	formatter: decimalFormatter( 0 )
 } ];
 
 export default { columns };

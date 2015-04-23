@@ -4,7 +4,7 @@ args="-t babelify -t node-lessify --commondir=$PWD --extension=.jsx --extension=
 # :${cmd=watch};
 case "$cmd" in
     watch)
-        watchify -d --fast $args;
+        watchify -v -d --fast $args;
         ;;
     build)
         browserify $args;

@@ -1,86 +1,69 @@
 import React from 'react';
+import Header from './header';
 import ColumnDef from './column-def';
 import Row from './row';
 
 const { PropTypes } = React;
 
-const Header = React.createClass({
-	render () {
-		return (<div>header</div>);
-	}
-});
-
-let Grid = React.createClass({
-	propTypes: {
-		columns: PropTypes.arrayOf( ColumnDef ).isRequired,
-		keyField: PropTypes.string.isRequired,
-		data: PropTypes.arrayOf( PropTypes.object )
-	},
-
-	getDefaultProps () {
-		return {
-			header: true,
-			rowHeight: 20,
-			data: []
-		};
-	},
-
-	getInitialState () {
-		return {
+class Grid extends React.Component {
+	constructor ( props ) {
+		super( props );
+		this.state = {
 			scrollTop: 0,
 			clientHeight: 0
 		};
-	},
+		this._onScroll = this._onScroll.bind( this );
+	}
 
 	componentDidUpdate ( prevProps, prevState ) {
-		let { scrollWidth } = this.refs.body.getDOMNode();
+		let { scrollWidth } = React.findDOMNode( this.refs.body );
 		this.state.scrollWidth = scrollWidth;
-	},
+	}
 
 	componentDidMount () {
 		let {
 			scrollTop,
 			clientHeight
-		} = this.getDOMNode();
+		} = React.findDOMNode( this );
 
-		let { scrollWidth } = this.refs.body.getDOMNode();
+		let { scrollWidth } = React.findDOMNode( this.refs.body );
 
-		this.setState({
+		this.setState( {
 			scrollWidth,
 			scrollTop,
 			clientHeight
-		});
+		} );
 
 		if ( document.documentMode <= 8 ) {
-			this.refs.body.getDOMNode().onscroll = this._onScroll;
+			React.findDOMNode( this.refs.body ).onscroll = this._onScroll;
 		}
-	},
+	}
 
 	getFirstVisible () {
 		let top = this.getTop();
 		return Math.floor( top / this.props.rowHeight );
-	},
+	}
 
 	getLastVisible () {
 		let top = this.getTop();
 		let bottom = top + this.getHeight();
 		return Math.ceil( bottom / this.props.rowHeight );
-	},
+	}
 
 	getTop () {
 		return this.state.scrollTop;
-	},
+	}
 
 	getHeight () {
 		return this.state.clientHeight;
-	},
+	}
 
 	_onScroll ( e ) {
-		let { scrollTop } = this.refs.body.getDOMNode();
-		this.setState({
+		let { scrollTop } = React.findDOMNode( this.refs.body );
+		this.setState( {
 			scrollTop
-		});
-	},
+		} );
+	}
 
 	render () {
 		let header = this.props.header ? <Header /> : null;
@@ -92,7 +75,7 @@ let Grid = React.createClass({
 		let filling = {
 			height: this.props.rowHeight * data.length,
 			width: this.state.scrollWidth
-		}
+		};
 
 		let virtualStyle = {
 			top: first * this.props.rowHeight
@@ -108,15 +91,32 @@ let Grid = React.createClass({
 		return (
 		<div className='grid'>
 			{header}
-			<div className='body' ref='body' onScroll={this._onScroll} tabIndex='0'>
+			<div
+				className='body'
+				onScroll={ this._onScroll }
+				ref='body'
+				tabIndex='0'
+			>
 				<div style={ filling }/>
-				<div className='virtual' style={virtualStyle}>
+				<div className='virtual' style={ virtualStyle }>
 					{ rows }
 				</div>
 			</div>
 		</div>
 		);
 	}
-});
+}
+Grid.propTypes = {
+	columns: PropTypes.arrayOf( ColumnDef ).isRequired,
+	data: PropTypes.arrayOf( PropTypes.object ),
+	header: PropTypes.bool.isRequired,
+	keyField: PropTypes.string.isRequired,
+	rowHeight: PropTypes.number.isRequired
+};
+Grid.defaultProps = {
+	header: true,
+	rowHeight: 20,
+	data: []
+};
 
 export default Grid;

@@ -4,24 +4,20 @@ import ColumnDef from './column-def';
 
 const { PropTypes } = React;
 
-const Row = React.createClass({
-	propTypes: {
-		columns: PropTypes.arrayOf( ColumnDef ).isRequired,
-		item: PropTypes.object.isRequired
-	},
-
+class Row extends React.Component {
 	shouldComponentUpdate ( nextProps, nextState ) {
 		return false;
-	},
+	}
 
 	render () {
 		let { item, columns } = this.props;
 
 		let cells = columns.map( column =>
 			<Cell
-				key={ column.name }
 				column={ column }
-				item={ item } />
+				item={ item }
+				key={ column.name }
+				/>
 		);
 
 		return (
@@ -30,6 +26,11 @@ const Row = React.createClass({
 		</div>
 		);
 	}
-});
+}
+
+Row.propTypes = {
+	columns: PropTypes.arrayOf( ColumnDef ).isRequired,
+	item: PropTypes.object.isRequired
+};
 
 export default Row;

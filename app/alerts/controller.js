@@ -9,8 +9,27 @@ export default router;
 router.get( '/alerts', ( request, response ) => {
 	let options = getOptions( request );
 	console.log( options );
-	findAll( options )
-		.stream().pipe( JSONStream.stringify() ).pipe( response );
+
+	let alerts = findAll( options );
+	Alert
+		.find( options.criteria )
+		.count()
+		.exec()
+		.then( count => {
+			response.setHeader( 'Content-Type', 'application/json' );
+			let open = `{\n"count": ${ count },\n"data": [\n`;
+			let sep = ',\n';
+			let close = `\n] }`;
+			return JSONStream.stringify( open, sep, close );
+		} )
+		.then( json => alerts.stream().pipe( json ).pipe( response ) );
+	// 		response.write( '{' );
+	// 		response.write( `"count": ${ count },` );
+	// 		response.write( `"data": ` );
+
+	// 	} );
+
+	// .pipe( JSONStream.stringify() ).pipe( response );
 		// .then(
 		// 	data => response.json( data ),
 		// 	e => response.status( 500 ).send( e )

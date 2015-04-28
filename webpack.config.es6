@@ -14,7 +14,7 @@ let output = {
 };
 
 let externals = {
-	react: 'React'
+	// react: 'React'
 };
 
 let target = 'web';

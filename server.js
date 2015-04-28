@@ -5,7 +5,7 @@ var cluster = require( 'cluster' );
 var app = require( './app' );
 
 // Code to run if we're in the master process
-if ( false && process.argv.indexOf( '--debug' ) < 0 && cluster.isMaster ) {
+if ( process.argv.indexOf( '--debug' ) < 0 && cluster.isMaster ) {
 	var threads = require( 'os' ).cpus().length;
 
 	if ( process.argv.indexOf( '-t' ) >= 0 ) {
@@ -21,7 +21,7 @@ if ( false && process.argv.indexOf( '--debug' ) < 0 && cluster.isMaster ) {
 			// Create a worker
 			cluster.fork();
 		}
-	} )( require( 'os' ).cpus().length );
+	} )( threads );
 
 	// Listen for dying workers
 	cluster.on( 'exit', function ( worker ) {

@@ -2,17 +2,19 @@
 
 import webpack from 'webpack';
 import { _extend } from 'util';
-import { output, entry, loaders, resolve, plugins } from './webpack.config.es6';
+import cfg from './webpack.config.es6';
 
 let port = 3001;
+let { entry, loaders, resolve, plugins } = cfg;
 let devtool = 'eval';
 
-output = _extend( {}, output );
+let output = _extend( {}, cfg.output );
 _extend( output, {
 	filename: 'index.js',
 	publicPath: `http://localhost:${port}/build/`,
-	sourceMapFilename: 'debugging/[file].map',
+	sourceMapFilename: 'debugging/[file].map'
 } );
+
 
 entry = [
 	'webpack-dev-server/client?http://localhost:' + port,

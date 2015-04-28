@@ -13,6 +13,40 @@
 -->
 <script src="polyfill/es6-shim.js"></script>
 <script src="polyfill/es6-sham.js"></script>
-<script src="http://localhost:3001/build/index.js"></script>
+<script>
+/*
+hash: ""
+host: "c91001b783ead2a.amer.homedepot.com:3000"
+hostname: "c91001b783ead2a.amer.homedepot.com"
+href: "http://c91001b783ead2a.amer.homedepot.com:3000/"
+origin: "http://c91001b783ead2a.amer.homedepot.com:3000"
+pathname: "/"
+port: "3000"
+protocol: "http:"
+ */
+( function () {
+	var wl = window.location;
+	var matcher = new RegExp(
+		'(' + escapeRegEx( wl.hostname ) + ')' +
+		'(:' + escapeRegEx( wl.port ) + ')?'
+	);
+	var origin = wl.origin.replace( matcher, '$1:3001' );
+	// var origin = wl.origin;
+	var s = document.createElement( 'script' );
+	s.src = [
+		origin,
+		'/build/index.js'
+	].join( '' );
+	document.head.appendChild( s );
+
+	function escapeRegEx ( str ) {
+		return str.replace(
+			/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,
+			'\\$&'
+		);
+	}
+} )();
+</script>
+<!-- <script src="http://localhost:3001/build/index.js"></script> -->
 </body>
 </html>

@@ -3,8 +3,12 @@ import {EventEmitter} from 'events';
 import dispatcher from './dispatcher';
 
 let data = [];
+let total = 0;
 function getAll () {
 	return data;
+}
+function add ( items ) {
+	data.push( ...items );
 }
 
 class AlertStore extends EventEmitter {
@@ -26,7 +30,7 @@ class AlertStore extends EventEmitter {
 	}
 
 	getTotal () {
-		return data.length;
+		return total/*data.length*/;
 	}
 
 	getAll () {
@@ -37,9 +41,16 @@ class AlertStore extends EventEmitter {
 		let { type } = action;
 
 		switch ( type ) {
-			case 'RAW_ALERTS':
-				data = action.data;
-				this.emit();
+		case 'NEW_SEARCH':
+			data = [];
+			total = 0;
+			this.emit();
+			break;
+		case 'RAW_ALERTS':
+			add( action.data );
+			total = action.count;
+			this.emit();
+			break;
 		}
 	}
 }
